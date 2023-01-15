@@ -19,26 +19,21 @@ public class AddUserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
-
-        req.setAttribute("name", getRequestParameter(req, "name"));
-        req.setAttribute("lastName", getRequestParameter(req, "lastName"));
-
-        Warehouse warehouse = Warehouse.getInstance();
-
-        User newUser = new User((String) req.getAttribute("name"), (String) req.getAttribute("lastName"));
-        warehouse.addUser(newUser);
-
+        req.setAttribute("user", req.getAttribute("user"));
         getServletContext().getRequestDispatcher("/jsp.add.jsp").forward(req, resp);
-
-
-
     }
 
-    protected String getRequestParameter(
-            HttpServletRequest request,
-            String name) {
-        String param = request.getParameter(name);
-        return !param.isEmpty() ? param : getInitParameter(name);
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
+        String firstName = req.getParameter("firstName");
+        String lastName = req.getParameter("lastName");
+
+        User user = new User(firstName, lastName);
+        req.setAttribute("user", user);
+        Warehouse warehouse = Warehouse.getInstance();
+        warehouse.addUser(user);
+
+        doGet(req, response);
     }
 }
