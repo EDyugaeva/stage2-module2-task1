@@ -20,7 +20,6 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        HttpSession session = req.getSession();
 
         req.setAttribute("name", getRequestParameter(req, "name"));
         req.setAttribute("lastName", getRequestParameter(req, "lastName"));
@@ -30,6 +29,7 @@ public class AddUserServlet extends HttpServlet {
         User newUser = new User((String) req.getAttribute("name"), (String) req.getAttribute("lastName"));
         warehouse.addUser(newUser);
 
+        getServletContext().getRequestDispatcher("/jsp.add.jsp").forward(req, resp);
 
 
 

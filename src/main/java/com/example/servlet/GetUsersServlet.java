@@ -31,9 +31,10 @@ public class GetUsersServlet extends HttpServlet {
                 printWriter.println();
             }
         }
+        req.setAttribute("users", Warehouse.getInstance().getUsers());
 
-        req.getSession();
         printWriter.close();
+        getServletContext().getRequestDispatcher("/jsp.users.jsp").forward(req, resp);
 
     }
 
