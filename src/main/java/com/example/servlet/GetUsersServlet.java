@@ -16,27 +16,13 @@ import java.util.Set;
 @WebServlet("/users")
 
 public class GetUsersServlet extends HttpServlet {
+    private final Warehouse warehouse = Warehouse.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Warehouse warehouse = Warehouse.getInstance();
-        resp.setContentType("text/html");
-        PrintWriter printWriter = resp.getWriter();
-        Set<User> set = warehouse.getUsers();
-        if (!set.isEmpty()) {
-            for (User user :
-                    set) {
-                printWriter.write(user.getFirstName() + " ");
-                printWriter.write(user.getLastName());
-                printWriter.println();
-            }
-        }
         req.setAttribute("users", Warehouse.getInstance().getUsers());
-
-        printWriter.close();
         getServletContext().getRequestDispatcher("/jsp.users.jsp").forward(req, resp);
 
     }
 
-    //write your code here!
 }
